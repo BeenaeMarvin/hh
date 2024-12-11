@@ -1,0 +1,180 @@
+/* Grundlegende Stile */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Comic Sans MS', cursive;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header */
+header {
+    background-color: #4a90e2;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+nav {
+    margin-top: 1rem;
+}
+
+nav button {
+    background: none;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+nav button.active {
+    background-color: white;
+    color: #4a90e2;
+}
+
+/* Main Content */
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+section {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+section.hidden {
+    display: none;
+}
+
+/* Avatar Grid */
+#avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+#avatar-grid img {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: transform 0.2s;
+}
+
+#avatar-grid img:hover {
+    transform: scale(1.05);
+}
+
+/* Quest Section */
+#quest-select {
+    width: 100%;
+    padding: 0.5rem;
+    margin: 1rem 0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+#complete-quest {
+    background-color: #4caf50;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Achievement Section */
+.streak-display {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+#achievements-list {
+    display: grid;
+    gap: 1rem;
+}
+
+/* Admin Section */
+.quest-management,
+.family-management {
+    margin-bottom: 2rem;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #4a90e2;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #357abd;
+}
+
+/* Ranking Section */
+#ranking-list {
+    list-style: none;
+}
+
+#ranking-list li {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+}
+
+#ranking-list img {
+    width: 30px;
+    height: 30px;
+    margin-right: 1rem;
+    border-radius: 50%;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #4a90e2;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    main {
+        padding: 0 0.5rem;
+    }
+
+    #avatar-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
