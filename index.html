@@ -9,79 +9,114 @@
 <body>
     <header>
         <h1>Haushalts-Questlog</h1>
+        <nav>
+            <button id="questlog-btn" class="active">Quests</button>
+            <button id="achievements-btn">Erfolge</button>
+            <button id="admin-btn">Admin</button>
+        </nav>
     </header>
 
-    <main>
-        <!-- Login/Register Bereich -->
-        <section id="login-section">
-            <h2>Willkommen beim Haushalts-Questlog</h2>
-            <div class="login-options">
-                <select id="user-select">
-                    <option value="">Wähle deinen Namen</option>
-                </select>
-                <button id="login-btn">Einloggen</button>
-                <button id="show-register-btn">Neu hier? Registrieren</button>
+    <!-- Login Bereich -->
+    <section id="login-section">
+        <h2>Willkommen zurück!</h2>
+        <select id="user-select">
+            <option value="">Wähle deinen Namen</option>
+        </select>
+        <button id="login-button">Einloggen</button>
+    </section>
+
+    <div id="main-content">
+        <!-- Avatar Section -->
+        <section id="avatar-section">
+            <h2>Dein Avatar</h2>
+            <div id="avatar-grid">
+                <!-- Avatare werden per JavaScript eingefügt -->
             </div>
+            <p id="selected-avatar"></p>
         </section>
 
-        <!-- Registrierungs Bereich -->
-        <section id="register-section" class="hidden">
-            <h2>Erstelle dein Profil</h2>
-            <div class="register-form">
-                <input type="text" id="new-member-name" placeholder="Dein Name">
-                <input type="number" id="new-member-age" placeholder="Dein Alter">
-                <div class="avatar-selection">
-                    <h3>Wähle deinen Avatar:</h3>
-                    <div class="avatar-grid">
-                        <!-- Avatare werden per JavaScript eingefügt -->
-                    </div>
-                </div>
-                <button id="register-btn">Profil erstellen</button>
-                <button id="back-to-login-btn">Zurück zum Login</button>
-            </div>
-        </section>
-
-        <!-- Quest Bereich -->
-        <section id="quest-section" class="hidden">
+        <!-- Quest Section -->
+        <section id="quest-section">
             <h2>Verfügbare Quests</h2>
             <select id="quest-select">
                 <option value="">Quest auswählen</option>
             </select>
             <button id="complete-quest">Quest abschließen</button>
-            <div id="active-quests">
-                <h3>Aktive Quests</h3>
-                <ul id="active-quests-list"></ul>
-            </div>
+            <div id="quest-list"></div>
         </section>
 
-        <!-- Achievement Bereich -->
+        <!-- Achievement Section -->
         <section id="achievement-section" class="hidden">
             <h2>Deine Erfolge</h2>
-            <div class="streak-info">
-                <h3>Aktuelle Streak: <span id="current-streak">0</span> Tage</h3>
-                <p>EXP Bonus: <span id="exp-multiplier">x1.0</span></p>
+            <div class="streak-display">
+                <h3>Aktuelle Streak: <span id="current-streak">0</span></h3>
+                <p>Beste Streak: <span id="best-streak">0</span></p>
+                <p>EXP Multiplikator: <span id="streak-multiplier">x1.0</span></p>
             </div>
             <div id="achievements-list">
                 <!-- Achievements werden per JavaScript eingefügt -->
             </div>
+            <div id="challenges">
+                <h3>Aktuelle Herausforderungen</h3>
+                <!-- Challenges werden per JavaScript eingefügt -->
+            </div>
         </section>
 
-        <!-- Ranking Bereich -->
+        <!-- Admin Section -->
+        <section id="admin-section" class="hidden">
+            <h2>Admin-Bereich</h2>
+            
+            <!-- Familienmitglieder verwalten -->
+            <div class="admin-box">
+                <h3>Familienmitglied hinzufügen</h3>
+                <input type="text" id="new-member-name" placeholder="Name">
+                <input type="number" id="new-member-age" placeholder="Alter">
+                <select id="new-member-character">
+                    <option value="">Charakter wählen</option>
+                    <option value="knight">Ritter</option>
+                    <option value="wizard">Magier</option>
+                    <option value="healer">Heiler</option>
+                    <option value="warrior">Krieger</option>
+                </select>
+                <button id="add-member">Hinzufügen</button>
+            </div>
+
+            <!-- Quests verwalten -->
+            <div class="admin-box">
+                <h3>Quest erstellen</h3>
+                <input type="text" id="new-quest-name" placeholder="Quest-Name">
+                <input type="number" id="new-quest-exp" placeholder="EXP">
+                <input type="text" id="new-quest-reward" placeholder="Belohnung">
+                <button id="add-quest">Quest hinzufügen</button>
+            </div>
+
+            <!-- Einstellungen -->
+            <div class="admin-box">
+                <h3>Einstellungen</h3>
+                <div class="setting-item">
+                    <label>Tägliches Quest-Limit</label>
+                    <input type="number" id="daily-quest-limit" value="5">
+                </div>
+                <div class="setting-item">
+                    <label>Quest-Zeitraum</label>
+                    <input type="time" id="quest-time-start">
+                    <input type="time" id="quest-time-end">
+                </div>
+                <button id="save-settings">Einstellungen speichern</button>
+            </div>
+        </section>
+
+        <!-- Ranking Section -->
         <section id="ranking-section">
             <h2>Familien-Ranking</h2>
             <ul id="ranking-list">
                 <!-- Ranking wird per JavaScript eingefügt -->
             </ul>
         </section>
-    </main>
+    </div>
 
     <footer>
-        <div class="credits">
-            <p>© 2024 Haushalts-Questlog</p>
-        </div>
-        <div class="user-stats">
-            <!-- Wird per JavaScript mit Nutzerdaten gefüllt -->
-        </div>
+        <p>© 2024 Haushalts-Questlog</p>
     </footer>
 
     <script src="script.js"></script>
