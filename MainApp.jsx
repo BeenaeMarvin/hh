@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ChevronLeft, ChevronRight, Home, Trophy, Settings, LogOut } from 'lucide-react';
 
-import LoginComponent from './components/LoginComponent';
-import QuestLog from './components/QuestLog';
-import AdminDashboard from './components/AdminDashboard';
-import AchievementSystem from './components/AchievementSystem';
+import LoginComponent from './LoginComponent';
+import QuestLog from './QuestLog';
+import AdminDashboard from './AdminDashboard';
+import AchievementSystem from './AchievementSystem';
 
 const MainApp = () => {
   const [currentView, setCurrentView] = React.useState('home');
