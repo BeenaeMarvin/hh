@@ -1,15 +1,15 @@
-import React, { useState, Suspense } from 'react';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { ChevronLeft, ChevronRight, Home, Trophy, Settings, LogOut } from 'lucide-react';
-import { Card } from '@/components/ui/card';
 
-import HouseholdQuestlog from './components/HouseholdQuestlog';
+import LoginComponent from './components/LoginComponent';
+import QuestLog from './components/QuestLog';
 import AdminDashboard from './components/AdminDashboard';
 import AchievementSystem from './components/AchievementSystem';
-import LoginComponent from './components/LoginComponent';
 
 const MainApp = () => {
-  const [currentView, setCurrentView] = useState('home');
-  const [currentUser, setCurrentUser] = useState(() => {
+  const [currentView, setCurrentView] = React.useState('home');
+  const [currentUser, setCurrentUser] = React.useState(() => {
     const saved = localStorage.getItem('currentUser');
     return saved ? JSON.parse(saved) : null;
   });
@@ -24,7 +24,7 @@ const MainApp = () => {
   }
 
   const views = [
-    { id: 'home', title: 'Questlog', icon: <Home className="w-6 h-6" />, component: HouseholdQuestlog },
+    { id: 'home', title: 'Questlog', icon: <Home className="w-6 h-6" />, component: QuestLog },
     { id: 'achievements', title: 'Erfolge', icon: <Trophy className="w-6 h-6" />, component: AchievementSystem },
     { id: 'admin', title: 'Admin', icon: <Settings className="w-6 h-6" />, component: AdminDashboard }
   ];
@@ -92,7 +92,7 @@ const MainApp = () => {
           </button>
 
           <div className="py-4">
-            <Suspense fallback={
+            <React.Suspense fallback={
               <div className="flex justify-center items-center h-64">
                 <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500" />
               </div>
@@ -102,7 +102,7 @@ const MainApp = () => {
                   <view.component currentUser={currentUser} />
                 </div>
               ))}
-            </Suspense>
+            </React.Suspense>
           </div>
         </div>
       </main>
@@ -134,4 +134,8 @@ const MainApp = () => {
   );
 };
 
-export default MainApp;
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <MainApp />
+  </React.StrictMode>
+);
