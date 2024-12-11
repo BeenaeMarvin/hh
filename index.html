@@ -9,15 +9,79 @@
 <body>
     <header>
         <h1>Haushalts-Questlog</h1>
-        <!-- Navigation wird per JavaScript eingefügt -->
     </header>
 
     <main>
-        <!-- Hauptinhalt wird dynamisch per JavaScript geladen -->
+        <!-- Login/Register Bereich -->
+        <section id="login-section">
+            <h2>Willkommen beim Haushalts-Questlog</h2>
+            <div class="login-options">
+                <select id="user-select">
+                    <option value="">Wähle deinen Namen</option>
+                </select>
+                <button id="login-btn">Einloggen</button>
+                <button id="show-register-btn">Neu hier? Registrieren</button>
+            </div>
+        </section>
+
+        <!-- Registrierungs Bereich -->
+        <section id="register-section" class="hidden">
+            <h2>Erstelle dein Profil</h2>
+            <div class="register-form">
+                <input type="text" id="new-member-name" placeholder="Dein Name">
+                <input type="number" id="new-member-age" placeholder="Dein Alter">
+                <div class="avatar-selection">
+                    <h3>Wähle deinen Avatar:</h3>
+                    <div class="avatar-grid">
+                        <!-- Avatare werden per JavaScript eingefügt -->
+                    </div>
+                </div>
+                <button id="register-btn">Profil erstellen</button>
+                <button id="back-to-login-btn">Zurück zum Login</button>
+            </div>
+        </section>
+
+        <!-- Quest Bereich -->
+        <section id="quest-section" class="hidden">
+            <h2>Verfügbare Quests</h2>
+            <select id="quest-select">
+                <option value="">Quest auswählen</option>
+            </select>
+            <button id="complete-quest">Quest abschließen</button>
+            <div id="active-quests">
+                <h3>Aktive Quests</h3>
+                <ul id="active-quests-list"></ul>
+            </div>
+        </section>
+
+        <!-- Achievement Bereich -->
+        <section id="achievement-section" class="hidden">
+            <h2>Deine Erfolge</h2>
+            <div class="streak-info">
+                <h3>Aktuelle Streak: <span id="current-streak">0</span> Tage</h3>
+                <p>EXP Bonus: <span id="exp-multiplier">x1.0</span></p>
+            </div>
+            <div id="achievements-list">
+                <!-- Achievements werden per JavaScript eingefügt -->
+            </div>
+        </section>
+
+        <!-- Ranking Bereich -->
+        <section id="ranking-section">
+            <h2>Familien-Ranking</h2>
+            <ul id="ranking-list">
+                <!-- Ranking wird per JavaScript eingefügt -->
+            </ul>
+        </section>
     </main>
 
     <footer>
-        <p>© 2024 Haushalts-Questlog</p>
+        <div class="credits">
+            <p>© 2024 Haushalts-Questlog</p>
+        </div>
+        <div class="user-stats">
+            <!-- Wird per JavaScript mit Nutzerdaten gefüllt -->
+        </div>
     </footer>
 
     <script src="script.js"></script>
