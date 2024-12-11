@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { UserCircle } from 'lucide-react';
 
 const LoginComponent = ({ onLogin }) => {
-  const [loginMode, setLoginMode] = useState('login'); // 'login' oder 'register'
+  const [loginMode, setLoginMode] = useState('login');
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -12,16 +12,14 @@ const LoginComponent = ({ onLogin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Hier später die richtige Authentifizierung einbauen
-    // Für jetzt simulieren wir einen erfolgreichen Login
     const userData = {
       id: Date.now(),
       username: formData.username,
-      age: formData.age || null
+      age: formData.age || null,
+      exp: 0,
+      level: 1,
+      completedQuests: 0
     };
-    
-    // Speichern in localStorage
     localStorage.setItem('currentUser', JSON.stringify(userData));
     onLogin(userData);
   };
@@ -44,8 +42,8 @@ const LoginComponent = ({ onLogin }) => {
               <input
                 type="text"
                 value={formData.username}
-                onChange={(e) => setFormData({...formData, username: e.target.value})}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                onChange={e => setFormData({...formData, username: e.target.value})}
+                className="w-full p-2 border rounded"
                 required
               />
             </div>
@@ -56,8 +54,8 @@ const LoginComponent = ({ onLogin }) => {
               <input
                 type="password"
                 value={formData.password}
-                onChange={(e) => setFormData({...formData, password: e.target.value})}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                onChange={e => setFormData({...formData, password: e.target.value})}
+                className="w-full p-2 border rounded"
                 required
               />
             </div>
@@ -69,8 +67,8 @@ const LoginComponent = ({ onLogin }) => {
                 <input
                   type="number"
                   value={formData.age}
-                  onChange={(e) => setFormData({...formData, age: e.target.value})}
-                  className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                  onChange={e => setFormData({...formData, age: e.target.value})}
+                  className="w-full p-2 border rounded"
                   required
                 />
               </div>
