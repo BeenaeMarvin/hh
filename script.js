@@ -14,222 +14,217 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
 
     // Zustandsvariablen
-    let selectedAvatar = null;
     let familyMembers = [];
-    let currentView = 'questlog';
-    let streak = {
-        current: 0,
-        best: 0,
-        lastCompleted: null,
-        multiplier: 1.0
-    };
+    let currentUser = null;
+    let currentView = 'login';
 
-    // Element Referenzen
-    const avatarGrid = document.getElementById('avatar-grid');
-    const questSelect = document.getElementById('quest-select');
-    const rankingList = document.getElementById('ranking-list');
-    const navigationButtons = {
-        questlog: document.getElementById('questlog-btn'),
-        achievements: document.getElementById('achievements-btn'),
-        admin: document.getElementById('admin-btn')
-    };
-    const sections = {
-        questlog: document.getElementById('quest-section'),
-        achievements: document.getElementById('achievement-section'),
-        admin: document.getElementById('admin-section')
-    };
+    // Login/Register System
+    function showLoginScreen() {
+        const mainContent = document.querySelector('main');
+        mainContent.innerHTML = `
+            <div id="login-section">
+                <h2>Willkommen beim Haushalts-Questlog</h2>
+                <div class="login-options">
+                    <select id="user-select">
+                        <option value="">Wähle deinen Namen</option>
+                        ${familyMembers.map(member => 
+                            `<option value="${member.id}">${member.name}</option>`
+                        ).join('')}
+                    </select>
+                    <button id="login-btn">Einloggen</button>
+                    <button id="show-register-btn">Neu hier? Registrieren</button>
+                </div>
+            </div>
+        `;
 
-    // Initialisierung
-    function initialize() {
-        setupAvatars();
-        setupQuests();
-        setupEventListeners();
-        updateRanking();
-        loadData();
+        document.getElementById('show-register-btn').addEventListener('click', showRegisterScreen);
+        document.getElementById('login-btn').addEventListener('click', loginUser);
     }
 
-    // Daten laden und speichern
-    function loadData() {
-        const savedMembers = localStorage.getItem('familyMembers');
-        const savedStreak = localStorage.getItem('streak');
-        if (savedMembers) familyMembers = JSON.parse(savedMembers);
-        if (savedStreak) streak = JSON.parse(savedStreak);
-        updateUI();
-    }
+    function showRegisterScreen() {
+        const mainContent = document.querySelector('main');
+        mainContent.innerHTML = `
+            <div id="register-section">
+                <h2>Erstelle dein Profil</h2>
+                <div class="register-form">
+                    <input type="text" id="new-member-name" placeholder="Dein Name">
+                    <input type="number" id="new-member-age" placeholder="Dein Alter">
+                    <div class="avatar-selection">
+                        <h3>Wähle deinen Avatar:</h3>
+                        <div class="avatar-grid">
+                            ${avatars.map(avatar => `
+                                <div class="avatar-option">
+                                    <img src="assets/images/${avatar.image}" 
+                                         alt="${avatar.name}" 
+                                         data-avatar-id="${avatar.id}">
+                                    <p>${avatar.name}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <button id="register-btn">Profil erstellen</button>
+                    <button id="back-to-login-btn">Zurück zum Login</button>
+                </div>
+            </div>
+        `;
 
-    function saveData() {
-        localStorage.setItem('familyMembers', JSON.stringify(familyMembers));
-        localStorage.setItem('streak', JSON.stringify(streak));
-    }
-
-    // UI Setup
-    function setupAvatars() {
-        avatars.forEach(avatar => {
-            const img = document.createElement('img');
-            img.src = `assets/images/${avatar.image}`;
-            img.alt = avatar.name;
-            img.title = avatar.name;
-            img.addEventListener('click', () => selectAvatar(avatar));
-            avatarGrid.appendChild(img);
-        });
-    }
-
-    function setupQuests() {
-        questSelect.innerHTML = '<option value="">Quest auswählen</option>';
-        quests.forEach(quest => {
-            const option = document.createElement('option');
-            option.value = quest.id;
-            option.textContent = `${quest.name} (${quest.exp} EXP)`;
-            questSelect.appendChild(option);
-        });
-    }
-
-    function setupEventListeners() {
-        // Navigation
-        Object.keys(navigationButtons).forEach(key => {
-            navigationButtons[key].addEventListener('click', () => setActiveView(key));
+        // Avatar Auswahl
+        const avatarImages = document.querySelectorAll('.avatar-option img');
+        avatarImages.forEach(img => {
+            img.addEventListener('click', function() {
+                avatarImages.forEach(i => i.parentElement.classList.remove('selected'));
+                this.parentElement.classList.add('selected');
+            });
         });
 
-        // Quest Completion
-        document.getElementById('complete-quest').addEventListener('click', completeQuest);
-
-        // Admin Controls
-        document.getElementById('add-quest').addEventListener('click', addNewQuest);
-        document.getElementById('add-member').addEventListener('click', addNewMember);
+        document.getElementById('register-btn').addEventListener('click', registerNewUser);
+        document.getElementById('back-to-login-btn').addEventListener('click', showLoginScreen);
     }
 
-    // Navigation
-    function setActiveView(view) {
-        currentView = view;
-        Object.values(navigationButtons).forEach(btn => btn.classList.remove('active'));
-        navigationButtons[view].classList.add('active');
-        Object.values(sections).forEach(section => section.classList.add('hidden'));
-        sections[view].classList.remove('hidden');
-    }
+    function registerNewUser() {
+        const name = document.getElementById('new-member-name').value;
+        const age = document.getElementById('new-member-age').value;
+        const selectedAvatar = document.querySelector('.avatar-option.selected img');
 
-    // Avatar Selection
-    function selectAvatar(avatar) {
-        selectedAvatar = avatar;
-        document.getElementById('selected-avatar').textContent = 
-            `Ausgewählter Avatar: ${avatar.name}`;
-    }
-
-    // Quest Management
-    function completeQuest() {
-        if (!selectedAvatar) {
-            alert('Bitte wähle erst einen Avatar aus!');
+        if (!name || !age || !selectedAvatar) {
+            alert('Bitte fülle alle Felder aus und wähle einen Avatar!');
             return;
         }
 
-        const selectedQuestId = parseInt(questSelect.value);
-        const selectedQuest = quests.find(q => q.id === selectedQuestId);
+        const newUser = {
+            id: Date.now().toString(),
+            name: name,
+            age: parseInt(age),
+            avatar: selectedAvatar.dataset.avatarId,
+            exp: 0,
+            level: 1,
+            completedQuests: 0,
+            streak: {
+                current: 0,
+                best: 0,
+                lastCompleted: null,
+                multiplier: 1.0
+            }
+        };
+
+        familyMembers.push(newUser);
+        saveData();
+        loginUser(newUser.id);
+    }
+
+    function loginUser(userId) {
+        if (!userId) {
+            userId = document.getElementById('user-select').value;
+        }
         
-        if (!selectedQuest) {
+        const user = familyMembers.find(m => m.id === userId);
+        if (!user) {
+            alert('Bitte wähle einen Benutzer aus!');
+            return;
+        }
+
+        currentUser = user;
+        showMainInterface();
+    }
+
+    function showMainInterface() {
+        // Aktualisiere Header
+        const header = document.querySelector('header');
+        header.innerHTML = `
+            <h1>Haushalts-Questlog</h1>
+            <div class="user-info">
+                <img src="assets/images/${currentUser.avatar}.png" alt="${currentUser.name}">
+                <span>${currentUser.name} - Level ${currentUser.level}</span>
+            </div>
+            <nav>
+                <button id="questlog-btn" class="active">Quests</button>
+                <button id="achievements-btn">Erfolge</button>
+                <button id="logout-btn">Ausloggen</button>
+            </nav>
+        `;
+
+        // Zeige Quest-Interface
+        showQuestInterface();
+
+        // Event Listener für Navigation
+        document.getElementById('questlog-btn').addEventListener('click', showQuestInterface);
+        document.getElementById('achievements-btn').addEventListener('click', showAchievementInterface);
+        document.getElementById('logout-btn').addEventListener('click', logout);
+    }
+
+    function showQuestInterface() {
+        const mainContent = document.querySelector('main');
+        mainContent.innerHTML = `
+            <section id="quest-section">
+                <h2>Verfügbare Quests</h2>
+                <select id="quest-select">
+                    <option value="">Quest auswählen</option>
+                    ${quests.map(quest => `
+                        <option value="${quest.id}">${quest.name} (${quest.exp} EXP)</option>
+                    `).join('')}
+                </select>
+                <button id="complete-quest">Quest abschließen</button>
+            </section>
+            <section id="ranking-section">
+                <h2>Ranking</h2>
+                <ul id="ranking-list"></ul>
+            </section>
+        `;
+
+        document.getElementById('complete-quest').addEventListener('click', completeQuest);
+        updateRanking();
+    }
+
+    function completeQuest() {
+        const questId = document.getElementById('quest-select').value;
+        const quest = quests.find(q => q.id === parseInt(questId));
+
+        if (!quest) {
             alert('Bitte wähle eine Quest aus!');
             return;
         }
 
-        // Berechne EXP mit Streak-Multiplikator
-        const earnedExp = Math.round(selectedQuest.exp * streak.multiplier);
+        // Berechne EXP mit Streak
+        const earnedExp = Math.round(quest.exp * currentUser.streak.multiplier);
 
-        // Finde oder erstelle Familienmitglied
-        let member = familyMembers.find(m => m.avatar === selectedAvatar.id);
-        if (!member) {
-            member = {
-                avatar: selectedAvatar.id,
-                name: selectedAvatar.name,
-                exp: 0,
-                level: 1,
-                completedQuests: 0
-            };
-            familyMembers.push(member);
-        }
-
-        // Update Member Stats
-        member.exp += earnedExp;
-        member.level = Math.floor(Math.sqrt(member.exp / 10));
-        member.completedQuests++;
+        // Update User Stats
+        currentUser.exp += earnedExp;
+        currentUser.level = Math.floor(Math.sqrt(currentUser.exp / 10));
+        currentUser.completedQuests++;
 
         // Update Streak
         updateStreak();
-
-        // UI Updates
-        updateRanking();
+        
+        // Speichern und UI aktualisieren
         saveData();
-        alert(`Quest abgeschlossen!\nBelohnung: ${selectedQuest.reward}\nErhaltene EXP: ${earnedExp} (${streak.multiplier}x Multiplikator)`);
+        updateRanking();
+
+        alert(`Quest abgeschlossen!\nBelohnung: ${quest.reward}\nErhaltene EXP: ${earnedExp}`);
     }
 
-    // Streak Management
     function updateStreak() {
         const today = new Date().toDateString();
         
-        if (streak.lastCompleted === today) {
-            // Bereits heute eine Quest abgeschlossen
+        if (currentUser.streak.lastCompleted === today) {
             return;
         }
 
-        if (streak.lastCompleted === new Date(Date.now() - 86400000).toDateString()) {
-            // Gestern eine Quest abgeschlossen - Streak fortsetzen
-            streak.current++;
-            streak.multiplier = 1 + (streak.current * 0.1); // 10% Bonus pro Streak-Tag
+        if (currentUser.streak.lastCompleted === new Date(Date.now() - 86400000).toDateString()) {
+            currentUser.streak.current++;
+            currentUser.streak.multiplier = 1 + (currentUser.streak.current * 0.1);
         } else {
-            // Streak unterbrochen
-            streak.current = 1;
-            streak.multiplier = 1.0;
+            currentUser.streak.current = 1;
+            currentUser.streak.multiplier = 1.0;
         }
 
-        streak.lastCompleted = today;
-        streak.best = Math.max(streak.current, streak.best);
-        
-        // Update UI
-        document.getElementById('current-streak').textContent = streak.current;
-        document.getElementById('exp-multiplier').textContent = `x${streak.multiplier.toFixed(1)}`;
+        currentUser.streak.lastCompleted = today;
+        currentUser.streak.best = Math.max(currentUser.streak.current, currentUser.streak.best);
     }
 
-    // Admin Functions
-    function addNewQuest() {
-        const name = document.getElementById('new-quest-name').value;
-        const exp = parseInt(document.getElementById('new-quest-exp').value);
-        const reward = document.getElementById('new-quest-reward').value;
-
-        if (name && exp && reward) {
-            quests.push({
-                id: quests.length + 1,
-                name,
-                exp,
-                reward
-            });
-            setupQuests();
-            alert('Quest hinzugefügt!');
-        } else {
-            alert('Bitte fülle alle Felder aus!');
-        }
-    }
-
-    function addNewMember() {
-        const name = document.getElementById('new-member-name').value;
-        const age = document.getElementById('new-member-age').value;
-        const character = document.getElementById('new-member-character').value;
-
-        if (name && age && character) {
-            familyMembers.push({
-                name,
-                age,
-                avatar: character,
-                exp: 0,
-                level: 1,
-                completedQuests: 0
-            });
-            updateRanking();
-            saveData();
-            alert('Familienmitglied hinzugefügt!');
-        } else {
-            alert('Bitte fülle alle Felder aus!');
-        }
-    }
-
-    // Ranking Update
     function updateRanking() {
+        const rankingList = document.getElementById('ranking-list');
+        if (!rankingList) return;
+
         rankingList.innerHTML = '';
         
         familyMembers
@@ -246,6 +241,28 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    // Starte die Anwendung
+    function logout() {
+        currentUser = null;
+        showLoginScreen();
+    }
+
+    // Daten Management
+    function saveData() {
+        localStorage.setItem('familyMembers', JSON.stringify(familyMembers));
+    }
+
+    function loadData() {
+        const savedMembers = localStorage.getItem('familyMembers');
+        if (savedMembers) {
+            familyMembers = JSON.parse(savedMembers);
+        }
+    }
+
+    // Initialisierung
+    function initialize() {
+        loadData();
+        showLoginScreen();
+    }
+
     initialize();
 });
