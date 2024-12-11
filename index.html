@@ -9,79 +9,11 @@
 <body>
     <header>
         <h1>Haushalts-Questlog</h1>
-        <nav>
-            <button id="questlog-btn" class="active">Quests</button>
-            <button id="achievements-btn">Erfolge</button>
-            <button id="admin-btn">Admin</button>
-        </nav>
+        <!-- Navigation wird per JavaScript eingefügt -->
     </header>
 
     <main>
-        <!-- Character Selection -->
-        <section id="avatar-section">
-            <h2>Dein Avatar</h2>
-            <div id="avatar-grid">
-                <!-- Avatare werden per JavaScript eingefügt -->
-            </div>
-            <p id="selected-avatar"></p>
-        </section>
-
-        <!-- Quest Section -->
-        <section id="quest-section">
-            <h2>Verfügbare Quests</h2>
-            <select id="quest-select">
-                <!-- Quests werden per JavaScript eingefügt -->
-            </select>
-            <button id="complete-quest">Quest abschließen</button>
-            <div id="quest-list">
-                <!-- Aktive Quests werden hier angezeigt -->
-            </div>
-        </section>
-
-        <!-- Achievement Section (standardmäßig versteckt) -->
-        <section id="achievement-section" class="hidden">
-            <h2>Deine Erfolge</h2>
-            <div class="streak-display">
-                <h3>Aktuelle Streak: <span id="current-streak">0</span> Tage</h3>
-                <p>EXP Bonus: <span id="exp-multiplier">x1.0</span></p>
-            </div>
-            <div id="achievements-list">
-                <!-- Achievements werden per JavaScript eingefügt -->
-            </div>
-        </section>
-
-        <!-- Admin Section (standardmäßig versteckt) -->
-        <section id="admin-section" class="hidden">
-            <h2>Admin-Bereich</h2>
-            <div class="quest-management">
-                <h3>Quest erstellen</h3>
-                <input type="text" id="new-quest-name" placeholder="Quest-Name">
-                <input type="number" id="new-quest-exp" placeholder="EXP">
-                <input type="text" id="new-quest-reward" placeholder="Belohnung">
-                <button id="add-quest">Quest hinzufügen</button>
-            </div>
-            <div class="family-management">
-                <h3>Familienmitglied hinzufügen</h3>
-                <input type="text" id="new-member-name" placeholder="Name">
-                <input type="number" id="new-member-age" placeholder="Alter">
-                <select id="new-member-character">
-                    <option value="">Charakter wählen</option>
-                    <option value="knight">Ritter</option>
-                    <option value="wizard">Magier</option>
-                    <option value="healer">Heiler</option>
-                    <option value="warrior">Krieger</option>
-                </select>
-                <button id="add-member">Hinzufügen</button>
-            </div>
-        </section>
-
-        <!-- Ranking Section -->
-        <section id="ranking-section">
-            <h2>Ranking</h2>
-            <ul id="ranking-list">
-                <!-- Ranking wird per JavaScript eingefügt -->
-            </ul>
-        </section>
+        <!-- Hauptinhalt wird dynamisch per JavaScript geladen -->
     </main>
 
     <footer>
